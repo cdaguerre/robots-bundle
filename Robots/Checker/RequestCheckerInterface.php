@@ -1,0 +1,29 @@
+<?php
+
+namespace Dag\Component\Robots\Checker;
+
+use Symfony\Component\HttpFoundation\Request;
+
+/**
+ * @author Christian Daguerre <christian@daguer.re>
+ */
+interface RequestCheckerInterface
+{
+    /**
+     * Check if the given request was made by a robot.
+     *
+     * @param Request $request
+     *
+     * @return bool
+     */
+    public function isRobot(Request $request);
+
+    /**
+     * Check if the given request was made by a crawler.
+     *
+     * @param Request $request
+     *
+     * @return bool
+     */
+    public function isCrawler(Request $request);
+}

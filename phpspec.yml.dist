@@ -1,0 +1,12 @@
+suites:
+    Robots:
+        namespace: Dag\Component\Robots
+        psr4_prefix: Dag\Component\Robots
+        spec_path: Robots
+        src_path: Robots
+
+    RobotsBundle:
+        namespace: Dag\Bundle\RobotsBundle
+        psr4_prefix: Dag\Bundle\RobotsBundle
+        spec_path: RobotsBundle
+        src_path: RobotsBundle

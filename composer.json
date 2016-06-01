@@ -1,0 +1,35 @@
+{
+    "name": "cdaguerre/robots-bundle",
+    "type": "symfony-bundle",
+    "description": "Add contextual robots.txt files and meta headers",
+    "homepage": "https://github.com/cdaguerre/robots-bundle",
+    "keywords": ["robot", "crawler", "meta", "bundle"],
+    "license": "MIT",
+    "authors": [
+        { "name": "Christian Daguerre", "email": "christian@worldia.com"}
+    ],
+    "require": {
+        "php": ">=5.5.0"
+    },
+    "require-dev": {
+        "phpspec/phpspec": "~2.0",
+        "symfony/framework-bundle": "^2.7"
+    },
+    "suggest": {
+        "symfony/framework-bundle": "To use the Symfony bundle."
+    },
+    "config": {
+        "bin-dir": "bin"
+    },
+    "autoload": {
+        "psr-4": {
+            "Dag\\Component\\Robots\\": "Robots/",
+            "Dag\\Bundle\\RobotsBundle\\": "RobotsBundle/"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "0.1.x-dev"
+        }
+    }
+}

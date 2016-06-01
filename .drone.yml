@@ -1,0 +1,24 @@
+cache:
+  mount:
+    - .git
+    - /drone/composer-cache
+
+build:
+  image: worldia/php:cli
+  environment:
+    COMPOSER_CACHE_DIR: /drone/composer-cache
+  commands:
+    - composer install --prefer-dist --no-interaction --no-progress --ansi
+    - bin/phpspec run
+
+notify:
+  slack_blame:
+    token: xoxp-2941314706-2941314708-20197447201-1ced90fcf4
+    success:
+      username: "Bob"
+      icon: ":bob:"
+      message: "The build is fixed!"
+    failure:
+      username: "Bob"
+      icon: ":Bob:"
+      message: "The build is broken!"

@@ -1,0 +1,60 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+        <parameter key="dag.robots.resolver.tags.class">Dag\Component\Robots\Resolver\TagResolver</parameter>
+        <parameter key="dag.robots.checker.request.class">Dag\Component\Robots\Checker\RequestChecker</parameter>
+        <parameter key="dag.robots.listener.kernel_response.class">Dag\Bundle\RobotsBundle\EventListener\KernelResponseListener</parameter>
+        <parameter key="dag.robots.rule_initializer.class">Dag\Bundle\RobotsBundle\Doctrine\RuleInitializer</parameter>
+
+        <parameter key="dag.robots.rule_provider.repository.class">Dag\Component\Robots\Provider\RepositoryRuleProvider</parameter>
+        <parameter key="dag.robots.rule_provider.cached.class">Dag\Component\Robots\Provider\CachedRuleProvider</parameter>
+        <parameter key="dag.robots.rule_provider.fallback.class">Dag\Component\Robots\Provider\FallbackRuleProvider</parameter>
+        <parameter key="dag.robots.rule_provider.config.class">Dag\Component\Robots\Provider\ArrayRuleProvider</parameter>
+
+        <parameter key="dag.robots.form.type.tag_choice.class">Dag\Bundle\RobotsBundle\Form\Type\TagChoiceType</parameter>
+    </parameters>
+
+    <services>
+        <service id="dag.robots.checker.request" class="%dag.robots.checker.request.class%">
+        </service>
+        <service id="dag.robots.listener.kernel_response" class="%dag.robots.listener.kernel_response.class%">
+            <argument type="service" id="dag.robots.checker.request" />
+            <argument type="service" id="dag.robots.resolver.tags" />
+            <tag name="kernel.event_listener" event="kernel.response" method="addRobotTags" />
+        </service>
+
+        <service id="dag.robots.resolver.tags" class="%dag.robots.resolver.tags.class%">
+            <argument type="service" id="dag.robots.rule_provider" />
+        </service>
+
+        <service id="dag.robots.rule_provider.config" class="%dag.robots.rule_provider.config.class%">
+            <argument>%dag.robots.rules%</argument>
+        </service>
+        <service id="dag.robots.rule_provider.repository" class="%dag.robots.rule_provider.repository.class%">
+            <argument type="service" id="dag.robots.repository.robot_rule" />
+        </service>
+        <service id="dag.robots.rule_provider.fallback" class="%dag.robots.rule_provider.fallback.class%">
+            <argument type="service" id="dag.robots.rule_provider.repository" />
+            <argument type="service" id="dag.robots.rule_provider.config" />
+        </service>
+        <service id="dag.robots.rule_provider.cached" class="%dag.robots.rule_provider.cached.class%">
+            <argument type="service" id="dag.robots.rule_provider.fallback" />
+            <argument type="service" id="doctrine_cache.providers.dag_robots" />
+        </service>
+
+        <service id="dag.robots.rule_initializer" class="%dag.robots.rule_initializer.class%">
+            <argument>%dag.robots.rules%</argument>
+            <argument type="service" id="dag.robots.manager.robot_rule" />
+            <argument type="service" id="dag.robots.repository.robot_rule" />
+        </service>
+
+        <service id="dag.robots.form.type.tag_choice" class="%dag.robots.form.type.tag_choice.class%">
+            <tag name="form.type" alias="dag_robots_tag_choice" />
+        </service>
+    </services>
+
+</container>
