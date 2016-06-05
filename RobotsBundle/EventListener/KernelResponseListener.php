@@ -19,6 +19,11 @@ class KernelResponseListener
     protected $tagResolver;
 
     /**
+     * @var bool
+     */
+    protected $cloak = false;
+
+    /**
      * @param RequestCheckerInterface $requestChecker
      * @param TagResolverInterface    $tagResolver
      */
@@ -39,12 +44,12 @@ class KernelResponseListener
             return;
         }
 
-        // if (!$this->requestChecker->isCrawler($event->getRequest())) {
-        //     return;
-        // }
+        if ($this->cloak && !$this->requestChecker->isCrawler($event->getRequest())) {
+            return;
+        }
 
         if ($tags = $this->tagResolver->resolve($event->getRequest())) {
-            $event->getResponse()->headers->set('X-Robots-Tag', $tags);
+            $event->getResponse()->headers->set('X-Robots-Tag', implode(', ', $tags));
         }
     }
 }

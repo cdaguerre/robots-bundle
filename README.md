@@ -1,6 +1,7 @@
 ## RobotsBundle
 
-Add contextual robot meta headers.
+No need for robots.txt files,
+add contextual robot meta headers.
 
 ### Installation
 
@@ -20,5 +21,4 @@ dag_robots:
 
 ### TODO
 
-- [ ] Add route to serve robots.txt files dynamically.
 - [ ] Add tests
