@@ -1,7 +1,7 @@
 {
     "name": "cdaguerre/robots-bundle",
     "type": "symfony-bundle",
-    "description": "Add contextual robots.txt files and meta headers",
+    "description": "Add contextual robot meta headers",
     "homepage": "https://github.com/cdaguerre/robots-bundle",
     "keywords": ["robot", "crawler", "meta", "bundle"],
     "license": "MIT",
