@@ -1,11 +1,20 @@
 <?php
 
+/*
+ * This file is part of the robots-bundle package.
+ *
+ * (c) Christian Daguerre <christian@daguer.re>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace Dag\Bundle\RobotsBundle\Doctrine;
 
-use Symfony\Component\Console\Output\OutputInterface;
+use Dag\Component\Robots\Repository\RuleRepositoryInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\NonUniqueResultException;
-use Dag\Component\Robots\Repository\RuleRepositoryInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * @author Christian Daguerre <christian@daguer.re>
@@ -47,8 +56,8 @@ class RuleInitializer
 
     protected function initializeRules(OutputInterface $output = null)
     {
-        foreach ($this->rules as $host => $rules) {
-            if (null === $rule = $this->ruleRepository->findOneBy(array('route' => $data['route']))) {
+        foreach ($this->rules as $rule) {
+            if (null === $rule = $this->ruleRepository->findOneBy(['route' => $data['route']])) {
                 $rule = $this->ruleRepository->createNew();
                 $rule->setRoute($data['route']);
                 $rule->setHosts($data['hosts']);

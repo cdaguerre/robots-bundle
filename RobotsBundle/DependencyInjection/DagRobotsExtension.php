@@ -1,33 +1,37 @@
 <?php
 
+/*
+ * This file is part of the robots-bundle package.
+ *
+ * (c) Christian Daguerre <christian@daguer.re>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace Dag\Bundle\RobotsBundle\DependencyInjection;
 
+use Sylius\Bundle\ResourceBundle\DependencyInjection\Extension\AbstractResourceExtension;
+use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
-use Sylius\Bundle\ResourceBundle\DependencyInjection\Extension\AbstractResourceExtension;
+use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 
 class DagRobotsExtension extends AbstractResourceExtension implements PrependExtensionInterface
 {
-    /**
-     * Service prefix.
-     *
-     * @var string
-     */
-    protected $applicationName = 'dag.robots';
-
     /**
      * {@inheritdoc}
      */
     public function load(array $config, ContainerBuilder $container)
     {
-        $config = $this->configure(
-            $config,
-            new Configuration(),
-            $container,
-            self::CONFIGURE_LOADER | self::CONFIGURE_DATABASE | self::CONFIGURE_PARAMETERS | self::CONFIGURE_VALIDATORS | self::CONFIGURE_FORMS
-        );
+        $config = $this->processConfiguration($this->getConfiguration($config, $container), $config);
+        $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
 
-        $rules = array();
+        $this->registerResources('dag_robots', $config['driver'], $config['resources'], $container);
+
+        $loader->load('services.xml');
+
+        $rules = [];
 
         foreach ($config['rules'] as $rule) {
             foreach ($rule['hosts'] as $host) {
@@ -35,8 +39,8 @@ class DagRobotsExtension extends AbstractResourceExtension implements PrependExt
             }
         }
 
-        $container->setParameter('dag.robots.rules', $rules);
-        $container->setAlias('dag.robots.rule_provider', $config['rule_provider']);
+        $container->setParameter('dag_robots.rules', $rules);
+        $container->setAlias('dag_robots.rule_provider', $config['rule_provider']);
     }
 
     /**
@@ -48,10 +52,10 @@ class DagRobotsExtension extends AbstractResourceExtension implements PrependExt
             throw new \RuntimeException('DoctrineCacheBundle must be registered!');
         }
 
-        $container->prependExtensionConfig('doctrine_cache', array(
-            'providers' => array(
+        $container->prependExtensionConfig('doctrine_cache', [
+            'providers' => [
                 'dag_robots' => '%sylius.cache%',
-            ),
-        ));
+            ],
+        ]);
     }
 }
