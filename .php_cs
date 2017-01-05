@@ -1,29 +1,30 @@
 <?php
 
-$header = <<<EOF
-This file is part of the robots-bundle package.
+/*
+ * This file is part of the Worldia presentation bundle package.
+ * (c) Christian Daguerre <cdaguerre@worldia.com>
+ */
 
-(c) Christian Daguerre <christian@daguer.re>
-
-This source file is subject to the MIT license that is bundled
-with this source code in the file LICENSE.
+$header = <<<'EOF'
+This file is part of the Worldia presentation bundle package.
+(c) Christian Daguerre <cdaguerre@worldia.com>
 EOF;
 
-Symfony\CS\Fixer\Contrib\HeaderCommentFixer::setHeader($header);
-
-return Symfony\CS\Config\Config::create()
-    // use default SYMFONY_LEVEL and extra fixers:
-    ->fixers(array(
-        'header_comment',
-        'short_array_syntax',
-        'ordered_use',
-        'php_unit_construct',
-        'php_unit_strict',
-        'strict',
-        'strict_param',
-    ))
-    ->finder(
-        Symfony\CS\Finder\DefaultFinder::create()
+return PhpCsFixer\Config::create()
+    ->setUsingCache(false)
+    ->setRiskyAllowed(true)
+    ->setRules([
+        '@Symfony' => true,
+        '@Symfony:risky' => true,
+        'header_comment' => ['header' => $header],
+        'array_syntax' => ['syntax' => 'short'],
+        'php_unit_construct' => true,
+        'php_unit_strict' => true,
+        'strict_param' => true,
+        'binary_operator_spaces' => false,
+    ])
+    ->setFinder(
+        PhpCsFixer\Finder::create()
             ->exclude('tests')
             ->in(__DIR__)
     )
