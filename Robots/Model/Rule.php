@@ -7,10 +7,12 @@
 
 namespace Dag\Component\Robots\Model;
 
+use Sylius\Component\Resource\Model\ResourceInterface;
+
 /**
  * @author Christian Daguerre <christian@daguer.re>
  */
-class Rule implements RuleInterface
+class Rule implements RuleInterface, ResourceInterface
 {
     /**
      * @var int
@@ -48,6 +50,14 @@ class Rule implements RuleInterface
     public function __construct()
     {
         $this->createdAt = new \DateTime();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getId()
+    {
+        return $this->id;
     }
 
     /**
