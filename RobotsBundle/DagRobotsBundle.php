@@ -18,7 +18,7 @@ class DagRobotsBundle extends AbstractResourceBundle
     /**
      * {@inheritdoc}
      */
-    public function getSupportedDrivers()
+    public function getSupportedDrivers(): array
     {
         return [SyliusResourceBundle::DRIVER_DOCTRINE_ORM];
     }
@@ -26,7 +26,7 @@ class DagRobotsBundle extends AbstractResourceBundle
     /**
      * {@inheritdoc}
      */
-    protected function getModelNamespace()
+    protected function getModelNamespace(): ?string
     {
         return 'Dag\Component\Robots\Model';
     }

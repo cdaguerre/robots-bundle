@@ -8,12 +8,15 @@
 namespace Dag\Component\Robots\Model;
 
 use Sylius\Component\Resource\Model\ResourceInterface;
+use Sylius\Component\Resource\Model\TimestampableTrait;
 
 /**
  * @author Christian Daguerre <christian@daguer.re>
  */
 class Rule implements RuleInterface, ResourceInterface
 {
+    use TimestampableTrait;
+
     /**
      * @var int
      */
@@ -33,16 +36,6 @@ class Rule implements RuleInterface, ResourceInterface
      * @var array
      */
     protected $tags = [];
-
-    /**
-     * @var \DateTime
-     */
-    protected $createdAt;
-
-    /**
-     * @var \DateTime
-     */
-    protected $updatedAt;
 
     /**
      * Constructor.
@@ -106,41 +99,5 @@ class Rule implements RuleInterface, ResourceInterface
     public function setTags(array $tags)
     {
         $this->tags = $tags;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getCreatedAt()
-    {
-        return $this->createdAt;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setCreatedAt(\DateTime $createdAt)
-    {
-        $this->createdAt = $createdAt;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getUpdatedAt()
-    {
-        return $this->updatedAt;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setUpdatedAt(\DateTime $updatedAt)
-    {
-        $this->updatedAt = $updatedAt;
-
-        return $this;
     }
 }
